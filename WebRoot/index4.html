@@ -1,0 +1,299 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Qos稳定性评估</title>
+<meta charset="utf-8" />
+<!--↓↓↓ css ↓↓↓-->
+<link href="./css/bootstrap.css" rel="stylesheet" />
+<link href="./css/amber-style.css" rel="stylesheet" />
+<style type="text/css">
+</style>
+<!--↑↑↑ css ↑↑↑-->
+</head>
+<body>
+
+	<header>
+		<div class="container">
+			<p class="header-con-p">Web服务不确定性QoS稳定性评估系统</p>
+		</div>
+	</header>
+
+	<div class="content">
+		<div class="container">
+			<div class="row">
+				<div class="col-md-3" style="height:1px;">
+					<div style="position:fixed;width:270px;">
+						<hr />
+						<!--↓↓↓ 胶囊式标签页 ↓↓↓-->
+						<ul class="nav nav-pills nav-stacked">
+							<li><a href="./index.html"> <span
+									class="glyphicon glyphicon-home"></span>&nbsp; 数据集操作
+							</a></li>
+							<li><a href="./index2.html"> <span
+									class="glyphicon glyphicon-random"></span>&nbsp; Qos计算
+							</a></li>
+							<li><a href="./index3.html"> <span
+									class="glyphicon glyphicon-edit"></span>&nbsp; Qos评估
+							</a></li>
+							<li class="active"><a href="./index4.html"> <span
+									class="glyphicon glyphicon-list-alt"></span>&nbsp; 统计分析
+							</a></li>
+						</ul>
+						<!--↑↑↑ 胶囊式标签页 ↑↑↑-->
+						<hr />
+					</div>
+				</div>
+				<!--↓↓↓ 内容 ↓↓↓-->
+				<div class="col-md-9">
+					<h1 class="page-title">
+						<span class="glyphicon glyphicon-pushpin"></span>&nbsp; 评估结果分析
+					</h1>
+
+					<div class="panel panel-success">
+						<!-- Default panel contents -->
+						<div class="panel-heading amber-font">
+							<span class="glyphicon glyphicon-import"></span>&nbsp; 输入区域 (云模型)
+						</div>
+						<div class="panel-body">
+							<form class="form-inline">
+								<div class="form-group amber-font-20">
+
+									<div class="btn-group">
+										<button type="button" class="btn btn-info" id="thresholdSelect"
+											name='threshold0'>RT-熵</button>
+										<button type="button" class="btn btn-info dropdown-toggle"
+											data-toggle="dropdown">
+											<span class="caret"></span>
+										</button>
+										<ul class="dropdown-menu" role="menu" id="thresholdSelectUl">
+											<li><a name="threshold0">RT-熵</a></li>
+											<li><a name="threshold1">RT-超熵</a></li>
+											<li><a name="threshold2">RE</a></li>
+										</ul>
+									</div>
+									
+									起始: <input type=number class="form-control" id="input-begin"
+										style="width:100px;" /> 结束: <input type=number
+										class="form-control" id="input-end" style="width:100px;" />
+									间隔: <input type=number class="form-control" id="input-interval"
+										style="width:100px;" /> <input type="button"
+										class="btn btn-primary" id="execute-btn" value="执行" />
+								</div>
+							</form>
+						</div>
+
+					</div>
+					<!-- 为ECharts准备一个具备大小（宽高）的Dom -->
+					<div id="main" style="height:430px" class="well"></div>
+
+					<div class="panel panel-success">
+						<!-- Default panel contents -->
+						<div class="panel-heading amber-font">
+							<span class="glyphicon glyphicon-import"></span>&nbsp; 输入区域
+							(标准离差率)
+						</div>
+						
+						<div class="panel-body">
+							<form class="form-inline">
+								<div class="form-group amber-font-20">
+																	<div class="btn-group">
+										<button type="button" class="btn btn-info" id="thresholdOfCvSelect"
+											name='thresholdOfCv0'>RT-CV</button>
+										<button type="button" class="btn btn-info dropdown-toggle"
+											data-toggle="dropdown">
+											<span class="caret"></span>
+										</button>
+										<ul class="dropdown-menu" role="menu" id="thresholdOfCvSelectUl">
+											<li><a name="thresholdOfCv0">RT-CV</a></li>
+											<li><a name="thresholdOfCv1">RE</a></li>
+										</ul>
+									</div>
+									起始: <input type=number class="form-control" id="input-begin1"
+										style="width:100px;" /> 结束: <input type=number
+										class="form-control" id="input-end1" style="width:100px;" />
+									间隔: <input type=number class="form-control"
+										id="input-interval1" style="width:100px;" /> <input
+										type="button" class="btn btn-primary" id="execute-btn1"
+										value="执行" />
+								</div>
+							</form>
+						</div>
+
+					</div>
+
+					<!-- 为ECharts准备一个具备大小（宽高）的Dom -->
+					<div id="main1" style="height:430px" class="well"></div>
+					
+					<h1 class="page-title">
+						<span class="glyphicon glyphicon-pushpin"></span>&nbsp; 时间对比分析
+					</h1>
+					
+										<!-- QoS计算时间图 -->
+					<div id="main2" style="height:430px" class="well"></div>
+					
+					<!-- QoS评估时间图 -->
+					<div id="main3" style="height:430px" class="well"></div>
+
+					<!--↑↑↑ 内容 ↑↑↑-->
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<footer>
+		<div class="container">
+			<hr />
+			<p class="amber-p-center">Jade&copy;2015</p>
+		</div>
+	</footer>
+
+	<div id="form_top" class="top_img"></div>
+
+
+
+	<!--↓↓↓ JavaScript ↓↓↓-->
+	<script src="./js/jquery-2.1.3.min.js"></script>
+	<script src="./js/bootstrap.min.js"></script>
+	<script src="./js/echarts-all.js"></script>
+	<script src="./js/amber-script.js"></script>
+	<script src="./js/amber-chart.js"></script>
+	<script type="text/javascript">
+		//Action请求的全局URL
+		var url = "qosEvaluateChartAction.action";//图表1
+		var url1 = "qosEvaluateChartAction1.action";//图表2
+		//--
+		var thresholdSelect="threshold0";
+		var inputBegin = 500;
+		var inputEnd = 2500;
+		var inputInterval = 200;
+		$("#input-begin").val("500");
+		$("#input-end").val("2500");
+		$("#input-interval").val("200");
+		//--
+		var thresholdOfCvSelect="thresholdOfCv0";
+		var inputBegin1 = 10;
+		var inputEnd1 = 500;
+		var inputInterval1 = 50;
+		$("#input-begin1").val("10");
+		$("#input-end1").val("500");
+		$("#input-interval1").val("50");
+		
+		/*下拉菜单样式*/
+		$("#thresholdSelectUl a").click(function() {
+			$("#thresholdSelect").text($(this).text());
+			var name = $(this).attr("name");
+			$("#thresholdSelect").attr("name", name);
+			thresholdSelect = name;
+			if(thresholdSelect=="threshold0" || thresholdSelect=="threshold1"){
+				$("#input-begin").val("500");
+				$("#input-end").val("2500");
+				$("#input-interval").val("200");
+			}else{
+				$("#input-begin").val("0.90");
+				$("#input-end").val("1.00");
+				$("#input-interval").val("0.01");
+			}
+		});
+		/*下拉菜单样式*/
+		$("#thresholdOfCvSelectUl a").click(function() {
+			$("#thresholdOfCvSelect").text($(this).text());
+			var name = $(this).attr("name");
+			$("#thresholdOfCvSelect").attr("name", name);
+			thresholdOfCvSelect = name;
+			if(thresholdOfCvSelect=="thresholdOfCv0"){
+				$("#input-begin1").val("10");
+				$("#input-end1").val("500");
+				$("#input-interval1").val("50");
+			}else{
+				$("#input-begin1").val("0.90");
+				$("#input-end1").val("1.00");
+				$("#input-interval1").val("0.01");
+			}
+		});
+		/*
+		 $("#test").load(SendUrl,{
+		 serverId : 16423
+		 });
+		 */
+
+	
+		
+		/**发送请求*/
+		ask();
+		ask1();
+		
+		$("#execute-btn").click(function() {
+			inputBegin = $("#input-begin").val();
+			inputEnd = $("#input-end").val();
+			inputInterval = $("#input-interval").val();
+			ask();
+		});
+		$("#execute-btn1").click(function() {
+			inputBegin1 = $("#input-begin1").val();
+			inputEnd1 = $("#input-end1").val();
+			inputInterval1 = $("#input-interval1").val();
+			ask1();
+		});
+
+		function ask() {
+			$.getJSON(url, {
+				thresholdSelect : thresholdSelect,
+				inputBegin : inputBegin,
+				inputEnd : inputEnd,
+				inputInterval : inputInterval
+			}, function(data) {
+
+				xData = data.xData;
+				sdata1 = data.list1;
+				sdata2 = data.list2;
+				sdata3 = data.list3;
+
+				option = myChart.getOption();
+				option.xAxis[0].data = xData;
+				option.series[0].data = sdata1;
+				option.series[1].data = sdata2;
+				option.series[2].data = sdata3;
+				myChart.setOption(option, true);
+
+			});
+		}
+		
+		function ask1(){
+			$.getJSON(url1, {
+				thresholdSelect : thresholdOfCvSelect,
+				inputBegin : inputBegin1,
+				inputEnd : inputEnd1,
+				inputInterval : inputInterval1
+			}, function(data) {
+				
+				xData = data.xData;
+				sdata1 = data.list1;
+				sdata2 = data.list2;
+				sdata3 = data.list3;
+
+				option = myChart1.getOption();
+				option.xAxis[0].data = xData;
+				option.series[0].data = sdata1;
+				option.series[1].data = sdata2;
+				option.series[2].data = sdata3;
+				myChart1.setOption(option, true);
+			});
+		}
+
+		/*图表响应式展示*/
+		/*
+		    $(window).resize(function(){
+                myChart.resize();    
+             });  
+		*/
+		window.onresize = function(){
+            myChart.resize();    
+            myChart1.resize();    
+            myChart2.resize();    
+            myChart3.resize();    
+        };
+		
+	</script>
+	<!--↑↑↑ JavaScript ↑↑↑-->
+</body>
+</html>

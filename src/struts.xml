@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE struts PUBLIC "-//Apache Software Foundation//DTD Struts Configuration 2.1//EN" "http://struts.apache.org/dtds/struts-2.1.dtd">
+<struts>
+	<!-- 当 struts的配置文件修改后，系统是否自动重新加载该文件， 默认值为false（生产环境下使用），开发阶段最好打开 -->
+	<constant name="struts.configuration.xml.reload" value="true" />
+	<constant name="strtuts.devMode" value="true" />
+	
+	<package name="ajaxDemo" extends="json-default">
+		<action name="qosCalculateAction" class="action.QosCalculateAction">
+			<result name="success" type="json"></result>
+		</action>
+		<action name="serverQueryAction" class="action.ServerQueryAction">
+			<result name="success" type="json"></result>
+		</action>
+		<action name="userQueryAction" class="action.UserQueryAction">
+			<result name="success" type="json"></result>
+		</action>
+		<action name="qosEvaluateAction" class="action.QosEvaluateAction">
+			<result name="success" type="json"></result>
+		</action>
+		<action name="qosEvaluateChartAction" class="action.QosEvaluateChartAction" method="execute">
+			<result name="success" type="json"></result>
+		</action>
+	    <action name="qosEvaluateChartAction1" class="action.QosEvaluateChartAction" method="execute1">
+			<result name="success" type="json"></result>
+		</action>
+
+	</package>
+
+</struts>    

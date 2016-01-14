@@ -1,0 +1,280 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Qos稳定性评估</title>
+<meta charset="utf-8" />
+<!--↓↓↓ css ↓↓↓-->
+<link href="./css/bootstrap.css" rel="stylesheet" />
+<link href="./css/amber-style.css" rel="stylesheet" />
+<style type="text/css">
+</style>
+<!--↑↑↑ css ↑↑↑-->
+</head>
+<body>
+
+	<header>
+		<div class="container">
+			<p class="header-con-p">Web服务不确定性QoS稳定性评估系统</p>
+		</div>
+	</header>
+
+	<div class="content">
+		<div class="container">
+			<div class="row">
+				<div class="col-md-3" style="height:1px;">
+					<div style="position:fixed;width:270px;">
+						<hr />
+						<!--↓↓↓ 胶囊式标签页 ↓↓↓-->
+						<ul class="nav nav-pills nav-stacked">
+							<li><a href="./index.html"> <span
+									class="glyphicon glyphicon-home"></span>&nbsp; 数据集操作
+							</a></li>
+							<li><a href="./index2.html"> <span
+									class="glyphicon glyphicon-random"></span>&nbsp; Qos计算
+							</a></li>
+							<li class="active"><a href="./index3.html"> <span
+									class="glyphicon glyphicon-edit"></span>&nbsp; Qos评估
+							</a></li>
+							<li><a href="./index4.html"> <span
+									class="glyphicon glyphicon-list-alt"></span>&nbsp; 统计分析
+							</a></li>
+						</ul>
+						<!--↑↑↑ 胶囊式标签页 ↑↑↑-->
+						<hr />
+					</div>
+				</div>
+				<!--↓↓↓ 内容 ↓↓↓-->
+				<div class="col-md-9">
+					<h1 class="page-title">
+						<span class="glyphicon glyphicon-pushpin"></span>&nbsp; 执行操作
+					</h1>
+
+					<div class="panel panel-success">
+						<!-- 面板1 -->
+						<!-- Default panel contents -->
+						<div class="panel-heading amber-font">
+							<span class="glyphicon glyphicon-import"></span>&nbsp; 输入区域
+						</div>
+						<div class="panel-body">
+
+							<form class="form-inline">
+								<div class="form-group amber-font-20">
+									模型选择:
+									<div class="btn-group">
+										<button type="button" class="btn btn-info" id="modelSelect"
+											name='model0'>云模型</button>
+										<button type="button" class="btn btn-info dropdown-toggle"
+											data-toggle="dropdown">
+											<span class="caret"></span>
+										</button>
+										<ul class="dropdown-menu" role="menu" id="modelSelectUl">
+											<li><a name="model0">云模型</a></li>
+											<li><a name="model1">标准离差率</a></li>
+										</ul>
+									</div>
+								</div>
+							</form>
+
+							<div id="form-area1">
+								<form class="form-inline amber-margin-top10">
+									<div class="form-group amber-font-20">
+										RT属性门限:
+										<div class="input-group">
+											<div class="input-group-addon">熵</div>
+											<input type="number" class="form-control" id="rt-input1"
+												placeholder="">
+										</div>
+										<div class="input-group">
+											<div class="input-group-addon">超熵</div>
+											<input type="number" class="form-control" id="rt-input2"
+												placeholder="">
+										</div>
+									</div>
+								</form>
+								<form class="form-inline amber-margin-top10">
+									<div class="form-group amber-font-20">
+										RE属性门限:
+										<div class="input-group">
+											<div class="input-group-addon">可靠性</div>
+											<input type="number" class="form-control" id="re-input1"
+												placeholder="">
+										</div>									
+									</div>
+								</form>
+							</div>
+							<div id="form-area2" style="display:none;">
+								<form class="form-inline amber-margin-top10" id="form-input-2">
+									<div class="form-group amber-font-20">
+										RT属性门限:
+										<div class="input-group">
+											<div class="input-group-addon">CV</div>
+											<input type="number" class="form-control" id="rt-input3"
+												placeholder="">
+											<div class="input-group-addon">%</div>
+										</div>
+									</div>
+								</form>
+								<form class="form-inline amber-margin-top10">
+									<div class="form-group amber-font-20">
+										RE属性门限:
+										<div class="input-group">
+											<div class="input-group-addon">可靠性</div>
+											<input type="number" class="form-control" id="re-input2"
+												placeholder="">
+										</div>
+									</div>
+								</form>
+							</div>
+							<p class="amber-margin-top10">
+								<input type="button" class="btn btn-primary btn-large"
+									id="execute-btn" value="执行" />
+							</p>
+						</div>
+					</div>
+					<!-- 面板1 -->
+
+
+					<div class="panel panel-danger">
+						<!-- 面板2 -->
+						<!-- Default panel contents -->
+						<div class="panel-heading amber-font">
+							<span class="glyphicon glyphicon-export"
+								style="margin-bottom:10px;"></span>&nbsp; 结果列表
+						</div>
+
+						<div class="panel-body">
+
+							<div class="row">
+								<div class="col-md-4 amber-center">
+									<div class="value">
+										<h1 id="numberShow" class="amber-h-50">0</h1>
+										<p>不划分</p>
+									</div>
+								</div>
+								<div class="col-md-4 amber-center">
+									<div class="value">
+										<h1 id="numberShow2" class="amber-h-50">0</h1>
+										<p>国家划分</p>
+									</div>
+								</div>
+								<div class="col-md-4 amber-center">
+									<div class="value">
+										<h1 id="numberShow3" class="amber-h-50">0</h1>
+										<p>州级划分</p>
+									</div>
+								</div>
+							</div>
+
+							<div id="printTable"></div>
+							<div class=row>
+								<div class="col-md-6" id="printPage"></div>
+								<div class="col-md-6" id="printPage_f"></div>
+							</div>
+						</div>
+
+					</div>
+					<!-- 面板2 -->
+
+					<!--↑↑↑ 内容 ↑↑↑-->
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<footer>
+		<div class="container">
+			<hr />
+			<p class="amber-p-center">Jade&copy;2015</p>
+		</div>
+	</footer>
+
+	<div id="form_top" class="top_img"></div>
+
+
+
+	<!--↓↓↓ JavaScript ↓↓↓-->
+	<script src="./js/jquery-2.1.3.min.js"></script>
+	<script src="./js/bootstrap.min.js"></script>
+	<script src="./js/esl.js"></script>
+	<script src="./js/countUp.min.js"></script>
+	<script src="./js/amber-script.js"></script>
+	<script type="text/javascript">
+		//Action请求的全局URL
+		var url = "qosEvaluateAction.action";
+		var modelName = "model0";
+		
+		var rtEnThreshold = 0;
+		var rtHeThreshold = 0;
+		var reThresholdOfCloud=0;
+		
+		var rtCvThreshold = 0;
+		var reThresholdOfCv = 0;
+
+		$("#rt-input1").val("1000");
+		$("#rt-input2").val("1000");
+		$("#re-input1").val("1");
+
+		$("#rt-input3").val("100");
+		$("#re-input2").val("1");
+		/*
+		 $("#test").load(SendUrl,{
+		 serverId : 16423
+		 });
+		 */
+		/*下拉菜单样式*/
+		$("#modelSelectUl a").click(function() {
+			$("#modelSelect").text($(this).text());
+			var name = $(this).attr("name");
+			$("#modelSelect").attr("name", name);
+			modelName = name;
+			if (modelName == "model0") {
+				$("#form-area2").hide();
+				$("#form-area1").fadeIn(500);
+			} else if (modelName == "model1") {
+				$("#form-area1").hide();
+				$("#form-area2").fadeIn(500);
+			}
+		});
+
+		$("#execute-btn").click(
+				function() {
+					rtEnThreshold = $("#rt-input1").val();
+					rtHeThreshold = $("#rt-input2").val();
+					reThresholdOfCloud = $("#re-input1").val();
+					
+					rtCvThreshold = $("#rt-input3").val();
+					reThresholdOfCv = $("#re-input2").val();
+
+					//发送请求		
+					var columnNames = {
+						"wsid" : "服务编号",
+						"noArea" : "不划分",
+						"countryArea" : "国家划分",
+						"provinceArea" : "州级划分",
+					};
+					$.getJSON(url, {
+						modelName : modelName,
+						rtEnThreshold : rtEnThreshold,
+						rtHeThreshold : rtHeThreshold,
+						reThresholdOfCloud : reThresholdOfCloud,
+						rtCvThreshold : rtCvThreshold,
+						reThresholdOfCv : reThresholdOfCv
+					}, function(data) {
+						var array = data.list;
+						printTable(columnNames, array);
+
+						var demo = new countUp("numberShow", 1,
+								data.noAreaCount, 0, 2);
+						demo.start();
+						var demo2 = new countUp("numberShow2", 1,
+								data.countryAreaCount, 0, 2);
+						demo2.start();
+						var demo3 = new countUp("numberShow3", 1,
+								data.provinceAreaCount, 0, 2);
+						demo3.start();
+					});
+				});
+	</script>
+	<!--↑↑↑ JavaScript ↑↑↑-->
+</body>
+</html>

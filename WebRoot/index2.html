@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Qos稳定性评估</title>
+<meta charset="utf-8" />
+<!--↓↓↓ css ↓↓↓-->
+<link href="./css/bootstrap.css" rel="stylesheet" />
+<link href="./css/amber-style.css" rel="stylesheet" />
+<style type="text/css">
+</style>
+<!--↑↑↑ css ↑↑↑-->
+</head>
+<body>
+
+	<header>
+		<div class="container">
+			<p class="header-con-p">Web服务不确定性QoS稳定性评估系统</p>
+		</div>
+	</header>
+
+	<div class="content">
+		<div class="container">
+			<div class="row">
+				<div class="col-md-3" style="height:1px;">
+					<div style="position:fixed;width:270px;">
+						<hr />
+						<!--↓↓↓ 胶囊式标签页 ↓↓↓-->
+						<ul class="nav nav-pills nav-stacked">
+							<li><a href="./index.html"> <span
+									class="glyphicon glyphicon-home"></span>&nbsp; 数据集操作
+							</a></li>
+							<li class="active"><a href="./index2.html"> <span
+									class="glyphicon glyphicon-random"></span>&nbsp; Qos计算
+							</a></li>
+							<li><a href="./index3.html"> <span
+									class="glyphicon glyphicon-edit"></span>&nbsp; Qos评估
+							</a></li>
+							<li><a href="./index4.html"> <span
+									class="glyphicon glyphicon-list-alt"></span>&nbsp; 统计分析
+							</a></li>
+						</ul>
+						<!--↑↑↑ 胶囊式标签页 ↑↑↑-->
+						<hr />
+					</div>
+				</div>
+				<!--↓↓↓ 内容 ↓↓↓-->
+				<div class="col-md-9">
+					<h1 class="page-title">
+						<span class="glyphicon glyphicon-pushpin"></span>&nbsp; 执行操作
+					</h1>
+
+					<div class="panel panel-success">
+						<!-- 面板1 -->
+						<!-- Default panel contents -->
+						<div class="panel-heading amber-font">
+							<span class="glyphicon glyphicon-import"></span>&nbsp; 输入区域
+						</div>
+						<div class="panel-body">
+
+							<form class="form-inline">
+								<div class="form-group amber-font-20">
+									模型选择:
+									<div class="btn-group">
+										<button type="button" class="btn btn-info" id="modelSelect"
+											name='model0'>云模型</button>
+										<button type="button" class="btn btn-info dropdown-toggle"
+											data-toggle="dropdown">
+											<span class="caret"></span>
+										</button>
+										<ul class="dropdown-menu" role="menu" id="modelSelectUl">
+											<li><a name="model0">云模型</a></li>
+											<li><a name="model1">标准离差率</a></li>
+										</ul>
+									</div>
+								</div>
+
+								<div class="form-group amber-font-20">
+									划分方式:
+									<div class="btn-group">
+										<button type="button" class="btn btn-info" id="areaSelect"
+											name='area0'>不划分</button>
+										<button type="button" class="btn btn-info dropdown-toggle"
+											data-toggle="dropdown">
+											<span class="caret"></span>
+										</button>
+										<ul class="dropdown-menu" role="menu" id="areaSelectUl">
+											<li><a name="area0">不划分</a></li>
+											<li><a name="area1">国家</a></li>
+											<li><a name="area2">州级</a></li>
+										</ul>
+									</div>
+								</div>
+
+								<input type="button" class="btn btn-primary btn-large"
+									id="execute-btn" value="执行" />
+							</form>
+						</div>
+					</div>
+					<!-- 面板1 -->
+
+
+					<div class="panel panel-danger">
+						<!-- 面板2 -->
+						<!-- Default panel contents -->
+						<div class="panel-heading amber-font">
+							<span class="glyphicon glyphicon-export"
+								style="margin-bottom:10px;"></span>&nbsp; 结果列表
+						</div>
+
+						<div class="panel-body">
+							<div id="printTable"></div>
+							<div class=row>
+								<div class="col-md-6" id="printPage"></div>
+								<div class="col-md-6" id="printPage_f"></div>
+							</div>
+						</div>
+
+					</div>
+					<!-- 面板2 -->
+
+				</div>
+				<!--↑↑↑ 内容 ↑↑↑-->
+			</div>
+		</div>
+	</div>
+
+
+	<footer>
+		<div class="container">
+			<hr />
+			<p class="amber-p-center">Jade&copy;2015</p>
+		</div>
+	</footer>
+
+	<div id="form_top" class="top_img"></div>
+
+
+
+	<!--↓↓↓ JavaScript ↓↓↓-->
+	<script src="./js/jquery-2.1.3.min.js"></script>
+	<script src="./js/bootstrap.min.js"></script>
+	<script src="./js/esl.js"></script>
+	<script src="./js/amber-script.js"></script>
+	<script type="text/javascript">
+		//Action请求的全局URL
+		var url = "qosCalculateAction.action";
+		var modelName = "model0";
+		var areaName = "area0";
+		/*
+		 $("#test").load(SendUrl,{
+		 serverId : 16423
+		 });
+		 */
+
+		/*下拉菜单样式*/
+		$("#modelSelectUl a").click(function() {
+			$("#modelSelect").text($(this).text());
+			var name = $(this).attr("name");
+			$("#modelSelect").attr("name", name);
+			modelName = name;
+		});
+		/*下拉菜单样式*/
+		$("#areaSelectUl a").click(function() {
+			$("#areaSelect").text($(this).text());
+			var name = $(this).attr("name");
+			$("#areaSelect").attr("name", name);
+			areaName = name;
+		});
+
+
+		var columnNames = {
+			"wsid" : "服务编号",
+			"rtEx" : "响应时间(ex)",
+			"rtEn" : "响应时间(en)",
+			"rtHe" : "响应时间(he)",
+			"re" : "可靠性"
+		};
+		var columnNames2 = {
+				"wsid" : "服务编号",
+				"rtCv" : "响应时间(CV) %",
+				"re" : "可靠性",
+			};
+		$("#execute-btn").click(function() {
+			//发送请求		
+			$.getJSON(url, {
+				modelName : modelName,
+				areaName : areaName,
+			}, function(data) {
+				if(modelName=="model0"){
+					var array = data.list;
+					printTable2(columnNames, array);
+				}else if(modelName=="model1"){
+					var array = data.list2;
+					printTable(columnNames2,array);
+				}
+			});
+		});
+	</script>
+	<!--↑↑↑ JavaScript ↑↑↑-->
+</body>
+</html>

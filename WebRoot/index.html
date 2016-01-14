@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Qos稳定性评估</title>
+<meta charset="utf-8" />
+<!--↓↓↓ css ↓↓↓-->
+<link href="./css/bootstrap.css" rel="stylesheet" />
+<link href="./css/amber-style.css" rel="stylesheet" />
+<style type="text/css">
+</style>
+<!--↑↑↑ css ↑↑↑-->
+</head>
+<body>
+
+	<header>
+		<div class="container">
+			<p class="header-con-p">Web服务不确定性QoS稳定性评估系统</p>
+		</div>
+	</header>
+
+	<div class="content">
+		<div class="container">
+			<div class="row">
+				<div class="col-md-3" style="height:1px;">
+					<div style="position:fixed;width:270px;">
+						<hr />
+						<!--↓↓↓ 胶囊式标签页 ↓↓↓-->
+						<ul class="nav nav-pills nav-stacked">
+							<li class="active"><a href="./index.html"> <span
+									class="glyphicon glyphicon-home"></span>&nbsp; 数据集操作
+							</a></li>
+							<li><a href="./index2.html"> <span
+									class="glyphicon glyphicon-random"></span>&nbsp; Qos计算
+							</a></li>
+							<li><a href="./index3.html"> <span
+									class="glyphicon glyphicon-edit"></span>&nbsp; Qos评估
+							</a></li>
+							<li><a href="./index4.html"> <span
+									class="glyphicon glyphicon-list-alt"></span>&nbsp; 统计分析
+							</a></li>
+						</ul>
+						<!--↑↑↑ 胶囊式标签页 ↑↑↑-->
+						<hr />
+					</div>
+				</div>
+				<!--↓↓↓ 内容 ↓↓↓-->
+				<div class="col-md-9">
+					<h1 class="page-title">
+						<span class="glyphicon glyphicon-pushpin"></span>&nbsp; 执行操作
+					</h1>
+
+					<div class="panel panel-success">
+						<!-- Default panel contents -->
+						<div class="panel-heading amber-font">
+							<span class="glyphicon glyphicon-import"></span>&nbsp; 输入区域
+						</div>
+						<div class="panel-body">
+							<form class="form-inline">
+								<div class="form-group amber-font-20">
+									查询服务: <input type=text class="form-control" id="input-server"
+										placeholder="" /> <input type="button"
+										class="btn btn-primary" id="execute1" value="执行" />
+								</div>
+							</form>
+
+							<form class="form-inline">
+								<div class="form-group amber-font-20" style="margin-top:10px">
+									查询用户: <input type=text class="form-control" id="input-ip"
+										placeholder="" /> <input type="button"
+										class="btn btn-primary" id="execute2" value="执行" />
+								</div>
+							</form>
+
+						</div>
+
+					</div>
+
+					<div class="panel panel-danger">
+						<!-- Default panel contents -->
+						<div class="panel-heading amber-font">
+							<span class="glyphicon glyphicon-export"
+								style="margin-bottom:10px;"></span>&nbsp; 结果列表
+
+							<div class="btn-group" style="float:right;">
+								<button type="button" class="btn btn-info"
+									id="pageCountSelect" name='20'>20/页</button>
+								<button type="button"
+									class="btn btn-info dropdown-toggle"
+									data-toggle="dropdown">
+									<span class="caret"></span>
+								</button>
+								<ul class="dropdown-menu" role="menu" id="pageCountSelectUl">
+									<li><a name="10">10/页</a></li>
+									<li><a name="20">20/页</a></li>
+									<li><a name="30">30/页</a></li>
+								</ul>
+							</div>
+						</div>
+						<div class="panel-body">
+
+							<div id="printTable"></div>
+							<div class=row>
+								<div class="col-md-6" id="printPage"></div>
+								<div class="col-md-6" id="printPage_f"></div>
+							</div>
+
+						</div>
+
+					</div>
+				</div>
+
+				<!--↑↑↑ 内容 ↑↑↑-->
+			</div>
+		</div>
+	</div>
+
+
+	<footer>
+		<div class="container">
+			<hr />
+			<p class="amber-p-center">Jade&copy;2015</p>
+		</div>
+	</footer>
+
+	<div id="form_top" class="top_img"></div>
+
+
+
+	<!--↓↓↓ JavaScript ↓↓↓-->
+	<script src="./js/jquery-2.1.3.min.js"></script>
+	<script src="./js/bootstrap.min.js"></script>
+	<script src="./js/esl.js"></script>
+	<script src="./js/amber-script.js"></script>
+	<script type="text/javascript">
+		//Action请求的全局URL
+		var url1 = "serverQueryAction.action";
+		var url2 = "userQueryAction.action";
+		var pCountName = 20;
+		var curPage = 1;
+		var id = 16423;
+		var ip = "12.108.127.136";
+
+		/*load测试	
+		 $("#printTable").load(url2,{
+				userIp : ip,
+				pageCount : pCountName,
+				curPage : curPage
+			});
+	 */
+		$("#input-server").val("16423");
+		$("#input-ip").val("12.108.127.136");
+
+		/*下拉菜单样式*/
+		$("#pageCountSelectUl a").click(function() {
+			$("#pageCountSelect").text($(this).text());
+			var name = $(this).attr("name");
+			$("#pageCountSelect").attr("name", name);
+			pCountName = name;
+		});
+
+		var columnNames = {
+			"userId" : "用户编号",
+			"userCountry" : "国家",
+			"useCount" : "调用次数"
+		};
+		/**按钮1事件*/
+		$("#execute1").click(function() {
+			id = $("#input-server").val();
+			curPage = 1;
+			//发送请求		
+			ask1();
+		});
+
+		var columnNames2 = {
+			"serverId" : "用户编号",
+			"useCount" : "调用次数"
+		};
+		$("#execute2").click(function() {
+			ip = $("#input-ip").val();
+			curPage = 1;
+			//发送请求		
+			ask2();
+		});
+	</script>
+	<!--↑↑↑ JavaScript ↑↑↑-->
+</body>
+</html>
